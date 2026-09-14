@@ -12,7 +12,7 @@ from langchain_core.messages.base import BaseMessage
 from langchain_core.tools.base import BaseTool
 
 from typing import Annotated, TypedDict, Literal
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.prebuilt import ToolNode
@@ -34,9 +34,10 @@ def create_react_agent():
     Returns:
         A compiled LangGraph agent
     """
-    # Initialize the LLM — model name is overridable via GEMINI_MODEL env var
-    llm = ChatGoogleGenerativeAI(
-        model=os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"),
+    # Initialize the LLM — model and base URL are overridable via env vars
+    llm = ChatOllama(
+        model=os.environ.get("OLLAMA_MODEL", "llama3.1"),
+        base_url=os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434"),
         temperature=0,
     )
 
@@ -116,9 +117,8 @@ def format_response(response):
 
     if isinstance(last_message, (AIMessage, AIMessageChunk)):
         content = last_message.content
-        # Gemini returns content as a list of content blocks, e.g.:
-        # [{'type': 'text', 'text': '...', 'extras': {...}}]
-        # Only join blocks that are plain text; skip tool-use/other typed blocks.
+        # Ollama returns a plain string; handle list of blocks for generic
+        # compatibility (e.g. if a different model returns structured content).
         if isinstance(content, list):
             return "".join(
                 block.get("text", "")

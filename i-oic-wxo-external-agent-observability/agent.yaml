@@ -17,12 +17,15 @@ tags:
   - returns
   - langgraph
 
-api_url: "https://annualized-return-agent.2dx22psmaucq.us-south.codeengine.appdomain.cloud"
+# URL pública gerada pelo Cloudflare Quick Tunnel — muda a cada restart de start-local.sh.
+# Copie a URL impressa no terminal e cole aqui antes de executar:
+#   orchestrate agents import -f agent.yaml
+api_url: "https://observation-reduction-looksmart-deluxe.trycloudflare.com"
 
 # Authentication for the A2A endpoint (matches AGENT_API_KEY env var)
 auth_scheme: BEARER_TOKEN
 auth_config:
-  token: "REPLACE_WITH_YOUR_AGENT_API_KEY"
+  token: "4246d8105f27b54aae64974d685651db92dd0499a9766177ac53bc00e3e30d3c"
 
 chat_params:
   # Send full conversation history to the agent on each turn

@@ -328,14 +328,17 @@ def _emit_message_spans(
                     start_time=span_start_ns,
                 ) as span:
                     span.set_attribute("gen_ai.operation.name", "chat")
-                    span.set_attribute("gen_ai.system", "google_gemini")
+                    span.set_attribute(
+                        "gen_ai.system",
+                        os.getenv("LLM_PROVIDER", "ollama"),
+                    )
 
                     # ── model name ─────────────────────────────────────────
                     resp_meta = getattr(msg, "response_metadata", None) or {}
                     model_name = (
                         resp_meta.get("model_name")
                         or resp_meta.get("model")
-                        or os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+                        or os.getenv("OLLAMA_MODEL", "llama3.1")
                     )
                     span.set_attribute("gen_ai.request.model", model_name)
                     span.set_attribute("gen_ai.response.model", model_name)
