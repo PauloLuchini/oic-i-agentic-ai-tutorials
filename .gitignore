@@ -64,3 +64,5 @@ obo/automation_script/keys/*.pem
 # Dependency directories
 node_modules/
 
+# Cloudflare Quick Tunnel temporary logs
+/tmp/cloudflared-*.log

@@ -1,5 +1,0 @@
-langgraph
-langchain
-langchain-openai
-python-dotenv
-ibm-watsonx-orchestrate>=2.10.0
